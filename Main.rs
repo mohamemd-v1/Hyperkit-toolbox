@@ -1,11 +1,13 @@
 mod backend;
 mod apps;
-use crate::backend::safe::SafeVoid;
-use crate::backend::{commands, standard::tell, tokenization::*};
+use crate::backend::safe::Safe;
+use crate::backend::{commands, standard::tell, tokenization::* };
 use std::{env::*};
 use colored::*;
 use rustyline::DefaultEditor;
 use rustyline::error::ReadlineError;
+
+const GITHUBLINK:&str = "https://github.com/mohamemd-v1/Shell-like-toolbox-.git";
 
 fn main() {
     println!("*{} {} {} to see all the commands , {} to list all the available built in apps , {} for about" , "Enter".green()  , "help".red() ,"--commands".bright_purple() , "--built-in-apps".bright_purple() , "--about".bright_purple() );
@@ -17,7 +19,7 @@ fn main() {
         }
     };
 
-    set_current_dir(home).safe().unwrap_or_default();
+    set_current_dir(home).safe(format!("code:404 , this error shouldn`t occuer , report it to {}" , GITHUBLINK).as_str());
 
     let mut def = match DefaultEditor::new() {
         Ok(o) => o,
@@ -129,7 +131,7 @@ fn main() {
             let flag  = token(&data, 2);
             let fname = token(&data, 3);
             let outname = token(&data, 4);
-            let _ = apps::ship(ttype, flag , fname , outname);
+            apps::ship(ttype, flag , fname , outname).unwrap_or_default();
         }
         "end" => {
             break;
@@ -142,4 +144,4 @@ fn main() {
           }
       }
    }
-      }
+}
