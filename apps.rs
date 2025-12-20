@@ -1,13 +1,13 @@
-use std::{ fs , path};
+use std::{ fs, path};
 
 use colored::*;
 use evalexpr::*;
 use chrono::*;
 use tar::{Archive};
-use crate::backend::{safe::Safe, standard::tell};
+use crate::backend::{clean::read_file_cont, safe::{Safe}, standard::tell};
+use base64::{prelude::{BASE64_STANDARD, BASE64_STANDARD_NO_PAD, BASE64_URL_SAFE}, *};
 
-//code:33
-pub fn cul (math:String) {
+pub fn calc (math:String) {
     let path = tell();
 
     let e = match eval(&math) {
@@ -22,7 +22,7 @@ pub fn cul (math:String) {
     println!("[{path:?}]~>[ \x1b[34m{e}\x1b[0m ]");
 }
 
-//cdoe:0
+
 pub fn time() {
     let path= tell();
 
@@ -30,7 +30,7 @@ pub fn time() {
     println!("[{path:?}]~>[{time}]");
 }
 
-//code:1
+
 pub fn ship( ttype:String, flag:String , the_name_of_the_file:String , output_name:String) -> std::io::Result<()> {
   use tar::{Builder};
   let path = tell();
@@ -64,20 +64,122 @@ pub fn ship( ttype:String, flag:String , the_name_of_the_file:String , output_na
                 }
             }
         }
-        "zip" => {
-            match flag.trim() {
-                "--load" => {
-
-                }
-                "--Unload" => {}
-                _ => {
-                    println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No Type were suplied".red().bold());
-                }
-            }
-        }
         _ => {
-            println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No Type were suplied".red().bold());
+            println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No type were suplied".red().bold());
         }
     }
     Ok(())
 }
+
+pub fn transmute (ttype:String, flag:String , the_name_of_the_file:String , output_name:String) -> std::io::Result<()> {
+    let path = tell();
+    let readed = read_file_cont(&the_name_of_the_file)?;
+    match ttype.trim() {
+        "base64-ST" => {
+            match flag.trim() {
+                "--enc" => {
+                    let enc = BASE64_STANDARD.encode(&readed);
+
+                    fs::write(&output_name, enc).safe_mas("transmute","encoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                "--dec" => {
+                    let dec = BASE64_STANDARD.decode(&readed.trim()).unwrap_or_default();
+
+                    fs::write(&output_name, dec).safe_mas("transmute", "decoded successfully", "couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                _ => {
+                    println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No Flag were suplied".red().bold());
+                }
+            }
+        }
+        "base64-PD" => {
+            match flag.trim() {
+                "--enc" => {
+                    let enc = BASE64_STANDARD_NO_PAD.encode(&readed);
+
+                    fs::write(&output_name, enc).safe_mas("transmute","encoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                "--dec" => {
+                    let dec = BASE64_STANDARD_NO_PAD.decode(&readed).unwrap_or_default();
+
+                    fs::write(&output_name, dec).safe_mas("transmute","decoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                _ => {
+                    println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No Flag were suplied".red().bold());
+                }
+            }
+        }
+        "base64-URL" => {
+            match flag.trim() {
+                "--enc" => {
+                    let enc = BASE64_URL_SAFE.encode(&readed);
+
+                    fs::write(&output_name, enc).safe_mas("transmute","encoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                "--dec" => {
+                    let dec = BASE64_URL_SAFE.decode(&readed).unwrap_or_default();
+
+                    fs::write(&output_name, dec).safe_mas("transmute","decoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                _ => {
+                    println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No Flag were suplied".red().bold());
+                }
+            }            
+        }
+        "hex" => {
+            match flag.trim() {
+                "--enc" => {
+                    let enc = hex::encode(&readed);
+
+                    fs::write(&output_name, enc).safe_mas("transmute","encoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                "--dec" => {
+                    let dec = hex::decode(&readed).unwrap_or_default();
+
+                    fs::write(&output_name, dec).safe_mas("transmute","decoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                _ => {
+                    println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No Flag were suplied".red().bold());
+                }
+            }
+        }
+        "HEX" => {
+            match flag.trim() {
+                "--enc" => {
+                    let enc = hex::encode_upper(&readed);
+
+                    fs::write(&output_name, enc).safe_mas("transmute","encoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                "--dec" => {
+                    let dec = hex::decode(&readed).unwrap_or_default();
+
+                    fs::write(&output_name, dec).safe_mas("transmute","decoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                _ => {
+                    println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No Flag were suplied".red().bold());
+                }
+            }
+        }
+        "url" => {
+            match flag.trim() {
+                "--enc" => {
+                    let enc = urlencoding::encode(&readed).into_owned();
+
+                    fs::write(&output_name, enc).safe_mas("transmute","encoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                "--dec" => {
+                    let dec = urlencoding::decode(&readed).unwrap_or_default().into_owned();
+            
+                    fs::write(&output_name, dec).safe_mas("transmute","decoded successfully","couldn`t write the encoded codic to the file Consider trying abother type");
+                }
+                _ => {
+                    println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No Flag were suplied".red().bold());
+                }
+            }
+        }
+        _ => {
+            println!("[{path:?}]~>{}: due to [{}]" , "Error".red().bold() , "No type were suplied".red().bold());
+        }
+    }
+    Ok(())
+}   
