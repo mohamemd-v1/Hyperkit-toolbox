@@ -22,12 +22,20 @@ use std::{env, fs::{self,File}, io::*,  path::PathBuf  , process};
             println!("   *{} {} {} to move a file from place to another" , "enter".green() , "mv".bright_blue() , "<Name>".bright_purple());
         }
         "--built-in-apps" => {
-            println!("   *{} {} {} to use the built-in calculator" , "enter".green() , "<cal>".bright_blue() , "<Math>".purple());
-            println!("   *{} {} to know the time" , "enter".green() , "<time>".bright_blue() );
+            println!("   *{} {} {} to use the built-in calculator" , "enter".green() , "calc".bright_blue() , "<Math>".purple());
+            println!("   *{} {} to know the time" , "enter".green() , "time".bright_blue() );
             println!("   *{} {} {} {} {} {} to make/extract tar files" , "enter".green() , "ship".bright_blue() , "<Type>".bright_purple(), "<Flag>".bright_yellow() , "<File-Name>".bright_cyan() , "<File-Outpot-Name>".bright_magenta());
+            println!("   *{} {} {} {} {} {} to encode/decode files" , "enter".green() , "transmute".bright_blue() , "<Type>".bright_purple(), "<Flag>".bright_yellow() , "<File-Name>".bright_cyan() , "<File-Outpot-Name>".bright_magenta());
+
         }
         "--about" => {
             println!("{}HyperKit is a modern, extensible, and lightweight command-line environment built to unify the tools you need into one powerful workspace." , "@".bright_green() )
+        }
+        "ship" => {
+                println!("   *[{}: tar][{}: --load {} --Unload {}]" , "Types".bright_green().bold() , "flags".bright_blue().bold(), "to make an arcive".bright_purple().bold() , "to extract an arcive".bright_yellow().bold());
+        }
+        "transmute" => {
+                println!("   *[{}: base64-PD<pedding> , base64-ST<standerd> , base64-URL<url> , hex<low-case hex> , Hex<uper-case hex> ][{}: --enc {} --dec {}]" , "Types".bright_green().bold() , "flags".bright_blue().bold(), "to encode a file".bright_purple().bold() , "to decode a file".bright_yellow().bold());
         }
         _ => {
             println!("   *{} {} {} to see all the commands , {} to list all the available built in apps , {} for about" , "Enter".green()  , "help".red() ,"--commands".bright_purple() , "--built-in-apps".bright_purple() , "--about".bright_purple() );
@@ -35,21 +43,21 @@ use std::{env, fs::{self,File}, io::*,  path::PathBuf  , process};
        }
     }
 
-    //code:1
+   
     pub fn clean() -> std::io::Result<()> {
        print!("\x1B[2J\x1B[1;1H");
        stdout().flush().safe(format!("code:404 , this error shouldn`t occuer , report it to {}" , GITHUBLINK).as_str());
        Ok(())
     }
 
-    //code:1
+    
     pub fn go(t:String) -> std::io::Result<()> { 
         let path = PathBuf::from(&t);
         env::set_current_dir(&path).safe_mas("Go" , "directory has been changed successfully", &t);
         Ok(())
     }
     
-    //code:1
+  
     pub fn  wh() -> std::io::Result<()> {
         let path = tell();
 
@@ -58,7 +66,7 @@ use std::{env, fs::{self,File}, io::*,  path::PathBuf  , process};
         Ok(())
     }
 
-    //code:1
+    
     pub fn see () -> std::io::Result<()> {
         let path = tell();
 
@@ -80,7 +88,7 @@ use std::{env, fs::{self,File}, io::*,  path::PathBuf  , process};
         Ok(())
     }
 
-    //code:1
+   
     pub fn peek(file:String) -> std::io::Result<()> {
         let path = tell();
         let fe = File::open(&file);
@@ -109,13 +117,13 @@ use std::{env, fs::{self,File}, io::*,  path::PathBuf  , process};
         Ok(())
     }
 
-    //code:1
+    
     pub fn mk(path:String) -> std::io::Result<()> {
         fs::create_dir(&path).safe_mas("Mk", "Directory created successfully" , &path);
         Ok(())
     }
 
-    //code:1
+    
     pub fn burn(path:String) -> std::io::Result<()> {
         let tell = tell();
 
@@ -149,25 +157,21 @@ use std::{env, fs::{self,File}, io::*,  path::PathBuf  , process};
         Ok(())
     }
 
-    //code:1
     pub fn rn(f:String , t:String) -> std::io::Result<()> {
         fs::rename(&f, &t).safe_mas("rn", "Renamed successfully",format!("{}+{}" , &f , &t).as_str());
         Ok(())
     }
 
-    //code:1
     pub fn clone(f:String , t:String) -> std::io::Result<()> {
         fs::copy(&f, &t).safe_mas("clone", "Copied!", format!("{}+{}" , &f , &t).as_str());
         Ok(())
     }
 
-    //code:1
     pub fn forge(file:String) -> std::io::Result<()> {
         fs::File::create(&file).safe_mas("Forge completed!", "File created" , &file);
         Ok(())
     }
 
-    //code:1
     pub fn run(app:String) -> std::io::Result<()> {
         let path = tell();
         let run = process::Command::new(&app).output().safe_w_res(&app)?;
@@ -176,7 +180,7 @@ use std::{env, fs::{self,File}, io::*,  path::PathBuf  , process};
         Ok(())
     }
 
-    //code:1
+   
     pub fn mv(name:String , path:String) -> std::io::Result<()> {
         fs::copy(&name, format!("{}/{}" , &path , &name)).safe(format!("{}/{}" , &path, &name).as_str());
 
@@ -311,7 +315,7 @@ pub mod safe {
         }
     }
 
-    //done
+
     impl Safe for std::io::Result<File> {
         fn safe(self , err_res:&str) {
             match self {
@@ -366,7 +370,6 @@ pub mod safe {
         }
     }
     
-    //done
     impl<T: Add<Output = T> + Copy > SafeT<T> for std::io::Result<T> {
         fn safe(self , err_res:&str) {
             match self {
@@ -394,7 +397,6 @@ pub mod safe {
         }
     }
 
-    //done
     impl Safe for std::io::Result<PathBuf> {
         fn safe(self , err_res:&str)  {
              match self {
@@ -449,7 +451,6 @@ pub mod safe {
         }
     }
 
-    //done
     impl Safe for std::io::Result<()> {
         fn safe(self , err_res:&str) {
             match self {
@@ -504,7 +505,6 @@ pub mod safe {
         }
     }
     
-    //done
     impl Safe for std::io::Result<Metadata> {
         fn safe(self , err_res:&str ) {
             match self {
@@ -611,5 +611,17 @@ pub mod safe {
             };
             return Ok(s);
         }
+    }
+}
+
+pub mod clean {
+    use std::{fs::{File }, io::Read};
+    use crate::{backend::safe::{Safe, SafeT}};
+    
+    pub fn read_file_cont(path:&str) -> std::io::Result<String> {
+        let mut txtf = File::open(&path).safe_w_res(&path)?;
+        let mut readed = String::new();
+        txtf.read_to_string(&mut readed).safe(&path);
+        return Ok(readed);
     }
 }
