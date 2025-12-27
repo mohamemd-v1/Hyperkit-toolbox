@@ -140,6 +140,10 @@ fn main() {
             let outname = token(&data, 4);
             apps::transmute(ttype, flag, fname, outname).unwrap_or_default()
         }
+        "test" => {
+            let fpath = token(&data, 1);
+            apps::vortex(&fpath).unwrap_or_default();
+        }
         "end" => {
             break;
         }
