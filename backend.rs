@@ -40,7 +40,7 @@ use std::{env, fs::{self,File}, io::*,  path::PathBuf  , process};
         _ => {
             println!("   *{} {} {} to see all the commands , {} to list all the available built in apps , {} for about" , "Enter".green()  , "help".red() ,"--commands".bright_purple() , "--built-in-apps".bright_purple() , "--about".bright_purple() );
          } 
-       }
+       }    
     }
 
    
