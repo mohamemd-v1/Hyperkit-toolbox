@@ -144,6 +144,10 @@ fn main() {
             let fpath = token(&data, 1);
             apps::vortex(&fpath).unwrap_or_default();
         }
+        "find" => {
+            let fpath = token(&data, 1);
+            commands::find(&fpath).unwrap_or_default()
+        }
         "end" => {
             break;
         }
