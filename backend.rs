@@ -637,59 +637,6 @@ pub mod safe {
             return Ok(s);
         }
     }
-    impl Safe for std::io::Result<walkdir::DirEntry> {
-        fn safe(self , err_res:&str) {
-            match self {
-                Ok(_) => return,
-
-                Err(e) => {
-                    errmes(&e, err_res);
-                    return;
-                }
-            }
-        }
-        fn safe_mas(self , mas1:&str , mas2:&str , err_res:&str) {
-            let path = tell();
-
-             match self {
-                Ok(_) => {
-                    println!("[{path:?}]~>{}: [{}]" , mas1.bright_green().bold() , mas2.bright_green().bold());
-                    return;
-                }
-                Err(e) => {
-                    errmes(&e, err_res);
-                    return;
-                }
-            }
-        }
-        fn _safe_mas_w_res(self , mas1:&str , mas2:&str , err_res:&str) -> Self {
-            let path = tell();
-
-            let s = match self {
-                Ok(o) => {
-                    println!("[{path:?}]~>{}: [{}]" , mas1.bright_green().bold() , mas2.bright_green().bold());
-                    o
-                }
-                Err(e) => {
-                    errmes(&e, err_res);
-                    return Err(e);
-                }
-            };
-            return Ok(s);
-        }
-        fn safe_w_res(self , err_res:&str) -> Self {
-             match self {
-                Ok(o) => {
-                    return Ok(o);
-                },
-
-                Err(e) => {
-                    errmes(&e, err_res);
-                    return Err(e);
-                }
-            }
-        }
-    }
 }
 
 pub mod clean {
