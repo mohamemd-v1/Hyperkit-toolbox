@@ -19,7 +19,7 @@ fn main() {
         }
     };
 
-    set_current_dir(home).safe(format!("code:404 , this error shouldn`t occuer , report it to {}" , GITHUBLINK).as_str());
+    set_current_dir(home).safe(Some(format!("code:404 , this error shouldn`t occuer , report it to {}" , GITHUBLINK).as_str()));
 
     let mut def = match DefaultEditor::new() {
         Ok(o) => o,
@@ -154,6 +154,15 @@ fn main() {
             let tok2 = tok2.parse().map(|e: usize| e as usize).unwrap_or_default();
             
             commands::ps(&tok1 , tok2).unwrap_or_default();
+        }
+        "stop" => {
+            let tok1 = token(&data, 1).parse().map(|e:i32| e as i32).unwrap_or_default();
+            commands::stop(tok1);    
+            
+        }
+        "call" => {
+            let tok1 = token(&data, 1);
+            commands::call(&tok1);
         }
         "end" => {
             break;
