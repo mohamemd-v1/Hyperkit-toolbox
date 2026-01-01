@@ -66,53 +66,53 @@ fn main() {
             commands::help(tok1);
         }
         "clean" => {
-            commands::clean().unwrap_or_default();
+            commands::clean().safe(None);
         }
         "go" => {
             let tok2  = token(&data, 1);
             if &tok2 == "back" {
-                commands::go("..".to_string()).unwrap_or_default();
+                commands::go("..".to_string()).safe(None);
             }
             else {
                 let tok2 = token(&data, 1);
-                commands::go(tok2).unwrap_or_default();
+                commands::go(tok2).safe(None);
             }
         }
         "wh" => {
-            commands::wh().unwrap_or_default();
+            commands::wh().safe(None);
         }
         "see" => {
-            commands::see().unwrap_or_default();
+            commands::see().safe(None);
         }
         "peek" => {
             let tok2 = token(&data, 1);
-            commands::peek(tok2).unwrap_or_default();
+            commands::peek(tok2).safe(None);
         }
         "mk" => {
             let tok2 = token(&data, 1);
-            commands::mk(tok2).unwrap_or_default();
+            commands::mk(tok2).safe(None);
         }
         "burn" => {
             let tok2 = token(&data, 1);
-            commands::burn(tok2).unwrap_or_default();
+            commands::burn(tok2).safe(None);
         }
         "rn" => {
             let tok1 = token(&data, 1);
             let tok2 = token(&data, 2);
-            commands::rn(tok1 , tok2).unwrap_or_default();
+            commands::rn(tok1 , tok2).safe(None);
         }
         "clone" => {
             let tok1 = token(&data, 1);
             let tok2 = token(&data, 2);
-            commands::clone(tok1 , tok2).unwrap_or_default();
+            commands::clone(tok1 , tok2).safe(None);
         }
         "forge" => {
             let tok1 = token(&data, 1);
-            let _ = commands::forge(tok1);
+            commands::forge(tok1).safe(None);
         }
         "run" => {
             let tok1 = token(&data , 1);
-            commands::run(tok1).unwrap_or_default();
+            commands::run(tok1).safe(None);
         }
         "cal" => {
             let tok1 = token(&data , 1);
@@ -124,36 +124,36 @@ fn main() {
         "mv" => {
             let tok1 = token(&data, 1);
             let tok2 = token(&data, 2);
-            commands::mv(tok1, tok2).unwrap_or_default();
+            commands::mv(tok1, tok2).safe(None);
         }
         "ship" => {
             let ttype = token(&data, 1);
             let flag  = token(&data, 2);
             let fname = token(&data, 3);
             let outname = token(&data, 4);
-            apps::ship(ttype, flag , fname , outname).unwrap_or_default();
+            apps::ship(ttype, flag , fname , outname).safe(None);
         }
         "transmute" => {
             let ttype = token(&data, 1);
             let flag  = token(&data, 2);
             let fname = token(&data, 3);
             let outname = token(&data, 4);
-            apps::transmute(ttype, flag, fname, outname).unwrap_or_default()
+            apps::transmute(ttype, flag, fname, outname).safe(None);
         }
         "vortex" => {
             let fpath = token(&data, 1);
-            apps::vortex(&fpath).unwrap_or_default();
+            apps::vortex(&fpath).safe(None);
         }
         "find" => {
             let fpath = token(&data, 1);
-            commands::find(&fpath).unwrap_or_default()
+            commands::find(&fpath).safe(None);
         }
         "ps" => {
             let tok1 = token(&data, 1);
             let tok2 = token(&data, 2);
             let tok2 = tok2.parse().map(|e: usize| e as usize).unwrap_or_default();
             
-            commands::ps(&tok1 , tok2).unwrap_or_default();
+            commands::ps(&tok1 , tok2).safe(None);
         }
         "stop" => {
             let tok1 = token(&data, 1).parse().map(|e:i32| e as i32).unwrap_or_default();
